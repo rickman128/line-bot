@@ -26,6 +26,10 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import Select
+
 app = Flask(__name__)
 
 # get channel_secret and channel_access_token from your environment variable
@@ -40,6 +44,21 @@ if channel_access_token is None:
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
+
+# todays corona num in Fukui
+def get_today_corona_fukui():
+	# Webdriver ManagerでChromeDriverを取得 
+	driver = webdriver.Chrome(ChromeDriverManager().install())
+
+	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
+
+	dropdown = driver.find_element_by_id("prefectures")
+	select = Select(dropdown)
+	select.select_by_visible_text('福井')
+
+	# 本日の新規感染者数（１日前くらい・・・？）
+	div_days = driver.find_element_by_class_name("col4-pattern1_num")
+	num = int(div_days.text)
 
 
 @app.route("/callback", methods=['POST'])
@@ -62,11 +81,26 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+	num = get_today_corona_fukui()
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
-    )
-
+        TextSendMessage(text=str(num))
+	)
+'''
+	if event.message.text == 'corona':
+		num = get_today_corona_fukui()
+		# reply
+	    line_bot_api.reply_message(
+	        event.reply_token,
+	        TextSendMessage(text=str(num))
+	    )
+	else:
+		# reply
+	    line_bot_api.reply_message(
+	        event.reply_token,
+	        TextSendMessage(text=event.message.text)
+	    )
+'''
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
