@@ -29,6 +29,7 @@ from linebot.models import (
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select
+from time import sleep
 
 app = Flask(__name__)
 
@@ -50,16 +51,19 @@ def get_today_corona_fukui():
 	# Webdriver ManagerでChromeDriverを取得 
 	driver = webdriver.Chrome(ChromeDriverManager().install())
 
+	sleep(2)
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
 
 	dropdown = driver.find_element_by_id("prefectures")
 	select = Select(dropdown)
 	select.select_by_visible_text('福井')
 
+	sleep(1)
 	# 本日の新規感染者数（１日前くらい・・・？）
 	div_days = driver.find_element_by_class_name("col4-pattern1_num")
-	num = int(div_days.text)
-
+	num = div_days.text
+	driver.quit()
+	return num
 
 @app.route("/callback", methods=['POST'])
 def callback():
