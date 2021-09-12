@@ -48,7 +48,7 @@ handler = WebhookHandler(channel_secret)
 
 # todays corona num in Fukui
 def get_today_corona_fukui():
-	# Webdriver Manager‚ÅChromeDriver‚ğæ“¾ 
+	# Webdriver Managerã§ChromeDriverã‚’å–å¾— 
 	driver = webdriver.Chrome(ChromeDriverManager().install())
 
 	sleep(2)
@@ -56,10 +56,10 @@ def get_today_corona_fukui():
 
 	dropdown = driver.find_element_by_id("prefectures")
 	select = Select(dropdown)
-	select.select_by_visible_text('•Ÿˆä')
+	select.select_by_visible_text('ç¦äº•')
 
 	sleep(1)
-	# –{“ú‚ÌV‹KŠ´õÒ”i‚P“ú‘O‚­‚ç‚¢EEEHj
+	# æœ¬æ—¥ã®æ–°è¦æ„ŸæŸ“è€…æ•°ï¼ˆï¼‘æ—¥å‰ãã‚‰ã„ãƒ»ãƒ»ãƒ»ï¼Ÿï¼‰
 	div_days = driver.find_element_by_class_name("col4-pattern1_num")
 	num = div_days.text
 	driver.quit()
