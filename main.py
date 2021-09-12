@@ -63,6 +63,7 @@ def get_today_corona_fukui():
 	div_days = driver.find_element_by_class_name("col4-pattern1_num")
 	num = div_days.text
 	driver.quit()
+	# add
 	return num
 
 @app.route("/callback", methods=['POST'])
