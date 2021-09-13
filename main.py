@@ -50,7 +50,7 @@ handler = WebhookHandler(channel_secret)
 def get_today_corona_fukui():
 	# Webdriver ManagerでChromeDriverを取得 
 	driver = webdriver.Chrome(ChromeDriverManager().install())
-
+	driver.implicitly_wait(20)
 	sleep(2)
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
 
@@ -58,7 +58,7 @@ def get_today_corona_fukui():
 	select = Select(dropdown)
 	#select.select_by_visible_text('福井')
 	select.select_by_value('18')
-	sleep(1)
+
 	# 本日の新規感染者数（１日前くらい・・・？）
 	div_days = driver.find_element_by_class_name("col4-pattern1_num")
 	num = div_days.text
