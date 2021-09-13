@@ -56,8 +56,8 @@ def get_today_corona_fukui():
 
 	dropdown = driver.find_element_by_id("prefectures")
 	select = Select(dropdown)
-	select.select_by_visible_text('福井')
-
+	#select.select_by_visible_text('福井')
+	select.select_by_value('18')
 	sleep(1)
 	# 本日の新規感染者数（１日前くらい・・・？）
 	div_days = driver.find_element_by_class_name("col4-pattern1_num")
