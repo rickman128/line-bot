@@ -30,6 +30,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select
 from time import sleep
+import logging
 
 app = Flask(__name__)
 
@@ -54,14 +55,18 @@ def get_today_corona_fukui():
 	sleep(2)
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
 
-	dropdown = driver.find_element_by_id("prefectures")
-	select = Select(dropdown)
-	#select.select_by_visible_text('福井')
-	select.select_by_value('18')
+	try:
+		dropdown = driver.find_element_by_id("prefectures")
+		select = Select(dropdown)
+		#select.select_by_visible_text('福井')
+		select.select_by_value('18')
 
-	# 本日の新規感染者数（１日前くらい・・・？）
-	div_days = driver.find_element_by_class_name("col4-pattern1_num")
-	num = div_days.text
+		# 本日の新規感染者数（１日前くらい・・・？）
+		div_days = driver.find_element_by_class_name("col4-pattern1_num")
+		num = div_days.text
+	except:
+		logging.exception("error around selenium")
+
 	driver.quit()
 	# add
 	return num
