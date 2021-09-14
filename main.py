@@ -64,6 +64,8 @@ def get_today_corona_fukui():
 		# 本日の新規感染者数（１日前くらい・・・？）
 		div_days = driver.find_element_by_class_name("col4-pattern1_num")
 		num = div_days.text
+		logging.debug("num: ")
+		logging.debug(num)
 	except:
 		logging.exception("error around selenium")
 
