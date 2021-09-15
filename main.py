@@ -63,6 +63,8 @@ def get_today_corona_fukui():
 	# test
 	el = driver.find_element_by_id("curSituNewCaseKPI")
 	num = el.text
+	print("get_today_corona_fukui()")
+	print(num)
 
 	'''
 	try:
@@ -106,6 +108,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
 	num = get_today_corona_fukui()
+	print("message_text")
+	print(num)
 	line_bot_api.reply_message(
 		event.reply_token,
 		TextSendMessage(text=str(num))
