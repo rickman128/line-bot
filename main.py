@@ -59,6 +59,7 @@ def get_today_corona_fukui():
 	driver.implicitly_wait(20)
 	sleep(2)
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
+	sleep(5)
 
 	# test
 	el = driver.find_element_by_id("curSituNewCaseKPI")
