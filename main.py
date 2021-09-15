@@ -11,6 +11,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
+import logging
 import os
 import sys
 from argparse import ArgumentParser
@@ -27,10 +28,14 @@ from linebot.models import (
 )
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select
 from time import sleep
-import logging
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -50,7 +55,11 @@ handler = WebhookHandler(channel_secret)
 # todays corona num in Fukui
 def get_today_corona_fukui():
 	# Webdriver ManagerでChromeDriverを取得 
-	driver = webdriver.Chrome(ChromeDriverManager().install())
+	#https://qiita.com/sho7650/items/8fe07126f00c8e94e13b
+	# ★いまここ --headlessと--disable-gpuオプションが必要らしい
+	options = Options()
+	options.add_argument('--headless')
+	driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 	driver.implicitly_wait(20)
 	sleep(2)
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
