@@ -61,6 +61,10 @@ def get_today_corona_fukui():
 	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
 
 	try:
+		# test
+		el = driver.find_element_by_id("curSituNewCaseKPI")
+		num = el.text
+		'''
 		dropdown = driver.find_element_by_id("prefectures")
 		select = Select(dropdown)
 		#select.select_by_visible_text('福井')
@@ -71,6 +75,7 @@ def get_today_corona_fukui():
 		num = div_days.text
 		logging.debug("num: ")
 		logging.debug(num)
+		'''
 	except:
 		logging.exception("error around selenium")
 
