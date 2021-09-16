@@ -58,7 +58,7 @@ def get_today_corona_fukui():
 	driver = webdriver.Chrome(options=options)
 	driver.implicitly_wait(20)
 	sleep(2)
-	driver.get("https://filmaga.filmarks.com/articles/3257/")
+	driver.get("https://wwws.warnerbros.co.jp/shiryoukan-muzai/")
 	sleep(5)
 
 	# test
