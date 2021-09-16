@@ -58,11 +58,11 @@ def get_today_corona_fukui():
 	driver = webdriver.Chrome(options=options)
 	driver.implicitly_wait(20)
 	sleep(2)
-	driver.get("https://covid19.mhlw.go.jp/extensions/public/index.html")
+	driver.get("https://filmaga.filmarks.com/articles/3257/")
 	sleep(5)
 
 	# test
-	el = driver.find_element_by_id("curSituNewCaseKPI")
+	el = driver.find_element_by_id("aboutIntroM")
 	num = el.text
 	print("get_today_corona_fukui()")
 	print(num)
