@@ -87,6 +87,24 @@ def get_today_corona_fukui():
 	# add
 	return ret_text
 
+# horror info
+def get_new_horror():
+	options = Options()
+	options.add_argument('--headless')
+	driver = webdriver.Chrome(options=options)
+	driver.implicitly_wait(20)
+	sleep(2)
+	driver.get('https://horror2.jp/')
+	div = driver.find_element_by_xpath("//*[@id='mainClm']/section/ul[1]/li[3]/a")
+	ret_text = div.get_attribute("href")
+
+	print("get_new_horror()")
+	print(ret_text)
+
+	driver.quit()
+	# add
+	return ret_text
+
 @app.route("/callback", methods=['POST'])
 def callback():
 	# get X-Line-Signature header value
@@ -107,20 +125,19 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-	num = get_today_corona_fukui()
-	print("message_text")
-	print(num)
-	line_bot_api.reply_message(
-		event.reply_token,
-		TextSendMessage(text=str(num))
-	)
-'''
-	if event.message.text == 'corona':
-		num = get_today_corona_fukui()
+	if event.message.text == 'コロナ':
+		ret = get_today_corona_fukui()
 		# reply
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(text=str(num))
+			TextSendMessage(text=str(ret))
+		)
+	elif event.message.text == "ホラー":
+		ret = get_new_horror()
+		# reply
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(text=str(ret))
 		)
 	else:
 		# reply
@@ -128,7 +145,6 @@ def message_text(event):
 			event.reply_token,
 			TextSendMessage(text=event.message.text)
 		)
-'''
 
 if __name__ == "__main__":
 	port = int(os.getenv("PORT", 5000))
