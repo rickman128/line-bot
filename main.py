@@ -58,14 +58,13 @@ def get_today_corona_fukui():
 	driver = webdriver.Chrome(options=options)
 	driver.implicitly_wait(20)
 	sleep(2)
-	driver.get("https://wwws.warnerbros.co.jp/shiryoukan-muzai/")
-	sleep(5)
+	driver.get('https://www.pref.fukui.lg.jp/doc/kenkou/kansensyo-yobousessyu/corona.html')
+	el = driver.find_element_by_xpath("//*[@id='content']/div/div[3]/p[3]")
+	bk = el.text
+	ret_text = bk.split("\n")[0]
 
-	# test
-	el = driver.find_element_by_id("aboutIntroM")
-	num = el.text
 	print("get_today_corona_fukui()")
-	print(num)
+	print(ret_text)
 
 	'''
 	try:
@@ -86,7 +85,7 @@ def get_today_corona_fukui():
 
 	driver.quit()
 	# add
-	return num
+	return ret_text
 
 @app.route("/callback", methods=['POST'])
 def callback():
