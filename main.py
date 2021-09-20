@@ -11,6 +11,15 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
+'''
+*****************************************************************************
+Process   いろいろ返すLINEボット
+Date      2021/09/10  K.Endo
+Memo      コロナ、ホラー、ネコチャンにお返事するボット
+
+
+*****************************************************************************
+'''
 import logging
 import os
 import sys
@@ -31,6 +40,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from time import sleep
+import random
 
 
 logging.basicConfig(level=logging.INFO)
@@ -51,7 +61,14 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
-# todays corona num in Fukui
+'''
+*****************************************************************************
+ Name      get_today_corona_fukui
+ Param     Nothing
+ Result    Nothing
+ Memo      todays corona num in Fukui
+*****************************************************************************
+'''
 def get_today_corona_fukui():
 	options = Options()
 	options.add_argument('--headless')
@@ -87,7 +104,14 @@ def get_today_corona_fukui():
 	# add
 	return ret_text
 
-# horror info
+'''
+*****************************************************************************
+ Name      get_new_horror
+ Param     Nothing
+ Result    Nothing
+ Memo      horror info
+*****************************************************************************
+'''
 def get_new_horror():
 	options = Options()
 	options.add_argument('--headless')
@@ -105,6 +129,27 @@ def get_new_horror():
 	# add
 	return ret_text
 
+'''
+*****************************************************************************
+ Name      get_nekochan
+ Param     Nothing
+ Result    Nothing
+ Memo      nekochan info
+*****************************************************************************
+'''
+def get_nekochan():
+	num = random.randrange(5)
+	cat_list = {0:"にゃあ", 1:"にゃーん", 2:"ニャ", 3: "にゃん", 4: "ニャー", 5:"ギャーーーーーーー"}
+	return cat_list[num]
+
+'''
+*****************************************************************************
+ Name      callback
+ Param     Nothing
+ Result    Nothing
+ Memo      
+*****************************************************************************
+'''
 @app.route("/callback", methods=['POST'])
 def callback():
 	# get X-Line-Signature header value
@@ -122,29 +167,32 @@ def callback():
 
 	return 'OK'
 
-
+'''
+*****************************************************************************
+ Name      message_text
+ Param     event	MessageEvent
+ Result    Nothing
+ Memo      
+*****************************************************************************
+'''
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-	if event.message.text == 'コロナ':
+	msg = event.message.text
+	if msg == 'コロナ':
 		ret = get_today_corona_fukui()
-		# reply
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(text=str(ret))
-		)
-	elif event.message.text == "ホラー":
+	elif msg == "ホラー":
 		ret = get_new_horror()
-		# reply
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(text=str(ret))
-		)
+	elif msg == 'ネコチャン'
+		ret = get_nekochan()
 	else:
-		# reply
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(text=event.message.text)
-		)
+		ret = event.message.text
+
+	# reply
+	line_bot_api.reply_message(
+		event.reply_token,
+		TextSendMessage(text=str(ret))
+	)
+
 
 if __name__ == "__main__":
 	port = int(os.getenv("PORT", 5000))
