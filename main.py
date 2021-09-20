@@ -182,7 +182,7 @@ def message_text(event):
 		ret = get_today_corona_fukui()
 	elif msg == "ホラー":
 		ret = get_new_horror()
-	elif msg == 'ネコチャン'
+	elif msg == 'ネコチャン':
 		ret = get_nekochan()
 	else:
 		ret = event.message.text
