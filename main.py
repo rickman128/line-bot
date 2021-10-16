@@ -131,6 +131,31 @@ def get_new_horror():
 
 '''
 *****************************************************************************
+ Name      get_new_running
+ Param     Nothing
+ Result    Nothing
+ Memo      running info
+*****************************************************************************
+'''
+def get_new_running():
+	options = Options()
+	options.add_argument('--headless')
+	driver = webdriver.Chrome(options=options)
+	driver.implicitly_wait(20)
+	sleep(2)
+	driver.get('https://hashirou.com/')
+	div = driver.find_element_by_xpath("//*[@id='index-page']/ul[1]/li[1]/a")
+	ret_text = div.get_attribute("href")
+
+	print("get_new_running()")
+	print(ret_text)
+
+	driver.quit()
+	# add
+	return ret_text
+
+'''
+*****************************************************************************
  Name      get_nekochan
  Param     Nothing
  Result    Nothing
@@ -182,6 +207,8 @@ def message_text(event):
 		ret = get_today_corona_fukui()
 	elif msg == "ホラー":
 		ret = get_new_horror()
+	elif msg == "ランニング":
+		ret = get_new_running()
 	elif msg == 'ネコチャン':
 		ret = get_nekochan()
 	else:
